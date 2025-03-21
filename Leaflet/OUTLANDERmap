@@ -1,0 +1,65 @@
+########################################
+######################################## TASK TWO 
+
+
+# Task 2: Read in the googlesheet data you and your colleagues created
+# into your DANmap object (with 11 background layers you created in Task 1).
+
+# Solution
+
+# Libraries
+library(tidyverse)
+library(googlesheets4)
+library(leaflet)
+
+gs4_deauth()
+
+OUTplaces <- read_sheet("https://docs.google.com/spreadsheets/d/1jrYTeZYiMM6EkhBiJAPgJigX6AewtvZO6Ae-IEJItAU/edit?usp=sharing",
+                     col_types = "cccnn",   # check that you have the right number and type of columns
+                     range = "OUTLANDER2025")
+
+glimpse(OUTplaces)
+
+l_OUT <- leaflet() %>%
+  setView(-4.0, 56.9, zoom = 6) %>% 
+  addTiles()
+
+l_OUT
+
+######################################## TASK THREE
+
+# Task 3: Can you cluster the points in Leaflet?
+# Hint: Google "clustering options in Leaflet in R"
+
+# Solution
+
+OUTmap <- leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(lng = OUTplaces$Longitude, 
+             lat = OUTplaces$Latitude,
+             popup = paste(OUTplaces$Placename, "<br>", OUTplaces$Type))
+OUTmap
+
+#saved the map :) saveWidget(OUTmap, "OUTmap.html", selfcontained = TRUE)
+
+######################################## TASK FOUR
+
+# Task 4: Look at the two maps (with and without clustering) and consider what
+# each is good for and what not.
+
+# Your brief answer
+
+#The one without cluster can be used for a general overview of the area but it does not show information that could be helpful or fun when looking at a map, 
+#we thought it would be fun to look at places where the tv show outlander was filmed and this is what the cluster shows :)
+
+######################################## TASK FIVE
+
+# Task 5: Find out how to display the notes and classifications column in the map. 
+# Hint: Check online help in sites such as 
+# https://r-charts.com/spatial/interactive-maps-leaflet/#popup
+
+# Solution
+
+#ANSWER: shown in task 3: popup = paste(OUTplaces$Placename, "<br>", OUTplaces$Type
+
+######################################## CONGRATULATIONS - YOUR ARE DONE :)
